@@ -1,7 +1,8 @@
 title: Our Menu
 description: Delicious recipes with preparation details
-baseurl: "/menu-site"
-url: "https://yourusername.github.io"
+domain: menu.benbuckton.com
+url: https://menu.benbuckton.com
+baseurl: ""
 
 collections:
   recipes:
