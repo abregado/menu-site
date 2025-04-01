@@ -4,13 +4,13 @@ baseurl: "/menu-site"
 url: "https://yourusername.github.io"
 
 collections:
-  items:
+  recipes:
     output: true
-    permalink: /items/:name
+    permalink: /recipes/:name
 
 defaults:
   - scope:
       path: ""
-      type: "items"
+      type: "recipes"
     values:
       layout: "item" 

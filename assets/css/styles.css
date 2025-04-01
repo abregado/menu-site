@@ -1,0 +1,588 @@
+:root {
+  /* Light theme (default) */
+  --primary-color: #2d3436;
+  --secondary-color: #636e72;
+  --accent-color: #00b894;
+  --background-color: #ffffff;
+  --surface-color: #f5f5f7;
+  --border-color: #dfe6e9;
+  --hover-shadow: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] {
+  --primary-color: #f5f6fa;
+  --secondary-color: #dcdde1;
+  --accent-color: #00d1a0;
+  --background-color: #1e272e;
+  --surface-color: #2d3436;
+  --border-color: #485460;
+  --hover-shadow: rgba(0, 0, 0, 0.3);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  line-height: 1.6;
+  color: var(--primary-color);
+  background-color: var(--background-color);
+  margin: 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Header Styles */
+.site-header {
+  background-color: var(--surface-color);
+  padding: 1rem 2rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.site-title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.site-title a {
+  text-decoration: none;
+  color: var(--primary-color);
+}
+
+.site-description {
+  color: var(--secondary-color);
+  margin: 0.5rem 0 0;
+}
+
+/* Category Styles */
+.category-section {
+  margin-bottom: 4rem;
+}
+
+.category-section h2 {
+  font-size: 1.8rem;
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--accent-color);
+}
+
+/* Menu Grid */
+.items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+/* Menu Item Card */
+.menu-item-card {
+  background: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1rem;
+  text-decoration: none;
+  color: var(--primary-color);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.menu-item-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px var(--hover-shadow);
+  border-color: var(--accent-color);
+}
+
+.menu-item-card:active {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--hover-shadow);
+}
+
+.menu-item-card h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.4rem;
+  color: var(--primary-color);
+}
+
+.item-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price {
+  font-weight: 600;
+  color: var(--accent-color);
+}
+
+.price span {
+  font-size: 0.8em;
+  font-weight: normal;
+  color: var(--secondary-color);
+}
+
+.calories {
+  color: var(--secondary-color);
+}
+
+/* Difficulty rating stars */
+.difficulty {
+  color: var(--primary-color);
+  letter-spacing: -1px;
+}
+
+/* Prep time icon and text */
+.prep-time {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Recipe Detail Page - Updated Styles */
+.item-detail {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.item-header {
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.75rem;
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.header-row h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  background: var(--surface-color);
+  color: var(--secondary-color);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.back-button:hover {
+  background: var(--accent-color);
+  color: white;
+}
+
+.quick-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.info-item {
+  color: var(--secondary-color);
+  font-size: 0.9rem;
+}
+
+.info-item.price {
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+.recipe-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.ingredients, .instructions {
+  background: var(--surface-color);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin: 0;
+}
+
+.ingredients h2, .instructions h2 {
+  margin-top: 0;
+  font-size: 1.4rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .item-detail {
+    padding: 0.75rem;
+  }
+
+  .header-row h1 {
+    font-size: 1.5rem;
+  }
+
+  .quick-info {
+    gap: 0.75rem;
+  }
+
+  .ingredients, .instructions {
+    padding: 1rem;
+  }
+
+  .header-row {
+    gap: 1rem;
+  }
+
+  .back-button {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Remove the old detail-box styles as they're no longer needed */
+.key-details, .detail-box {
+  display: none;
+}
+
+/* Updated and expanded responsive design */
+@media (max-width: 768px) {
+  /* Container adjustments */
+  .container {
+    padding: 0 1rem;
+    width: 100%;
+  }
+  
+  /* Header adjustments */
+  .site-header {
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .site-title {
+    font-size: 1.5rem;
+  }
+
+  .site-description {
+    font-size: 0.9rem;
+  }
+
+  /* Category adjustments */
+  .category-section {
+    margin-bottom: 2rem;
+  }
+
+  .category-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Grid to list conversion */
+  .items-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  /* Card adjustments for mobile */
+  .menu-item-card {
+    padding: 0.75rem;
+  }
+
+  .menu-item-card h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    grid-column: 1;
+  }
+
+  .item-details {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .item-details p {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+
+  /* Recipe detail page adjustments */
+  .item-detail {
+    padding: 1rem;
+    margin: 0.5rem;
+    border-radius: 8px;
+  }
+
+  .ingredients, .instructions {
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+
+  .ingredients ul, .instructions ol {
+    padding-left: 1.25rem;
+  }
+
+  .ingredients li, .instructions li {
+    margin-bottom: 0.5rem;
+  }
+
+  /* Back button adjustment */
+  .back-button {
+    margin-bottom: 1rem;
+  }
+
+  .key-details {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .detail-box {
+    padding: 0.5rem;
+  }
+}
+
+/* Additional breakpoint for very small screens */
+@media (max-width: 380px) {
+  .item-details {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .menu-item-card {
+    grid-template-columns: 1fr;
+  }
+
+  .site-title {
+    font-size: 1.5rem;
+  }
+
+  .detail-row {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+/* Add a subtle hover effect for the difficulty display */
+.menu-item-card:hover .difficulty {
+  transform: translateX(2px);
+  transition: transform 0.2s ease;
+}
+
+/* Add styles for detail page header */
+.detail-header {
+  padding: 0.75rem 2rem;
+  margin-bottom: 1rem;
+}
+
+.detail-header .back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--secondary-color);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.detail-header .back-button:hover {
+  color: var(--accent-color);
+  background: var(--surface-color);
+}
+
+/* Update item header styles */
+.item-header {
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.75rem;
+}
+
+.item-header h1 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.8rem;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .site-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .detail-header {
+    padding: 0.5rem 1rem;
+  }
+
+  .detail-header .back-button {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Add theme toggle styles */
+.theme-toggle {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--secondary-color);
+  transition: color 0.2s ease;
+  position: absolute;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.theme-toggle:hover {
+  color: var(--accent-color);
+}
+
+/* Mobile adjustments for theme toggle */
+@media (max-width: 768px) {
+  .theme-toggle {
+    right: 1rem;
+  }
+}
+
+/* Recipe sections styling */
+.recipe-section {
+    margin-bottom: 1.5rem;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.ingredients-section {
+    background: var(--surface-color);
+    border-left: 4px solid var(--accent-color);
+}
+
+.instructions-section {
+    background: var(--surface-color);
+    border-left: 4px solid #ff7675; /* Different accent color for instructions */
+}
+
+.section-header {
+    width: 100%;
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="dark"] .section-header {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.section-header:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .section-header:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.section-header h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: var(--primary-color);
+}
+
+.toggle-icon {
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+}
+
+.section-content {
+    padding: 1.5rem;
+    transition: max-height 0.3s ease-out;
+    max-height: 2000px; /* Adjust based on your content */
+    overflow: hidden;
+}
+
+.section-content.collapsed {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+/* Update ingredients list styling */
+.ingredients-section ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.ingredients-section li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.ingredients-section li:last-child {
+    border-bottom: none;
+}
+
+/* Update instructions list styling */
+.instructions-section ol {
+    padding-left: 2rem;
+}
+
+.instructions-section li {
+    margin-bottom: 1rem;
+    padding-left: 0.5rem;
+}
+
+/* Update price per serving style */
+.per-serving {
+    font-size: 0.8em;
+    font-weight: normal;
+    color: var(--secondary-color);
+    margin-left: 2px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .section-header {
+        padding: 0.75rem 1rem;
+    }
+
+    .section-content {
+        padding: 1rem;
+    }
+
+    .section-header h2 {
+        font-size: 1.2rem;
+    }
+} 

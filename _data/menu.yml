@@ -1,9 +1,0 @@
-categories:
-  - name: Appetizers
-    id: appetizers
-    items:
-      - name: Bruschetta
-        id: bruschetta
-        price: 8.99
-        prepTime: 15
-        difficultyRating: 2 

@@ -1,0 +1,6 @@
+- name: Appetizers
+  id: appetizers
+- name: Main Courses
+  id: mains
+- name: Desserts
+  id: desserts 
