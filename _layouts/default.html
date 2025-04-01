@@ -16,7 +16,7 @@
                     <a href="{{ site.baseurl }}/">{{ site.title }}</a>
                 </h1>
             {% endif %}
-            <button class="theme-toggle" aria-label="Toggle dark mode">
+            <button class="theme-toggle" aria-label="Toggle theme">
                 <span class="theme-toggle-icon">🌞</span>
             </button>
         </header>
@@ -29,6 +29,9 @@
         const themeToggleIcon = document.querySelector('.theme-toggle-icon');
         const html = document.documentElement;
         
+        // Available themes
+        const themes = ['light', 'dark', 'retro'];
+        
         // Check for saved theme preference
         const savedTheme = localStorage.getItem('theme') || 'light';
         html.setAttribute('data-theme', savedTheme);
@@ -37,7 +40,9 @@
         // Toggle theme
         themeToggle.addEventListener('click', () => {
             const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            const currentIndex = themes.indexOf(currentTheme);
+            const nextIndex = (currentIndex + 1) % themes.length;
+            const newTheme = themes[nextIndex];
             
             html.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
@@ -46,7 +51,12 @@
         
         // Update theme icon
         function updateThemeIcon(theme) {
-            themeToggleIcon.textContent = theme === 'light' ? '🌞' : '🌙';
+            const icons = {
+                'light': '🌞',
+                'dark': '🌙',
+                'retro': '👾'
+            };
+            themeToggleIcon.textContent = icons[theme];
         }
 
         // Check system preference on load
