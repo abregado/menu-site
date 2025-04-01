@@ -1,0 +1,16 @@
+title: Our Menu
+description: Delicious recipes with preparation details
+baseurl: "/menu-site"
+url: "https://yourusername.github.io"
+
+collections:
+  items:
+    output: true
+    permalink: /items/:name
+
+defaults:
+  - scope:
+      path: ""
+      type: "items"
+    values:
+      layout: "item" 

@@ -1,0 +1,23 @@
+---
+layout: default
+---
+<div class="menu-list">
+    {% for category in site.data.menu.categories %}
+    <div class="category-section">
+        <h2>{{ category.name }}</h2>
+        <div class="items-grid">
+            {% for item_ref in category.items %}
+            {% assign item = site.items | where: "id", item_ref.id | first %}
+            <a href="{{ item.url | relative_url }}" class="menu-item-card">
+                <h3>{{ item_ref.name }}</h3>
+                <div class="item-details">
+                    <p>Price: ${{ item_ref.price }}</p>
+                    <p>Prep Time: {{ item_ref.prepTime }} mins</p>
+                    <p>Difficulty: {% for i in (1..item_ref.difficultyRating) %}⭐{% endfor %}</p>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div> 

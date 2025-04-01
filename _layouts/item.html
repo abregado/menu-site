@@ -1,0 +1,32 @@
+---
+layout: default
+---
+<div class="item-detail">
+    <a href="{{ '/' | relative_url }}" class="back-button">← Back to Menu</a>
+    
+    <h1>{{ page.name }}</h1>
+    
+    <div class="item-info">
+        <p>Price: ${{ page.price }}</p>
+        <p>Preparation Time: {{ page.prepTime }} minutes</p>
+        <p>Difficulty: {% for i in (1..page.difficultyRating) %}⭐{% endfor %}</p>
+    </div>
+
+    <div class="ingredients">
+        <h2>Ingredients</h2>
+        <ul>
+            {% for ingredient in page.ingredients %}
+            <li>{{ ingredient }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="instructions">
+        <h2>Instructions</h2>
+        <ol>
+            {% for instruction in page.instructions %}
+            <li>{{ instruction }}</li>
+            {% endfor %}
+        </ol>
+    </div>
+</div> 
