@@ -2,7 +2,7 @@
 layout: ingredient-detail
 name: Chicken Breast
 id: /ingredients/chicken-breast
-pricePerGram: 0.015
+pricePerGram: 0.014  # ~€14/kg
 vegan: false
 nutrition:
   serving: 100

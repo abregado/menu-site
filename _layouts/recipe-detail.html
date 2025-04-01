@@ -20,6 +20,21 @@ layout: default
 {% assign price_per_serving = total_price | divided_by: servings | round: 2 %}
 {% assign calories_per_serving = total_calories | divided_by: servings | round %}
 
+{% assign optional_total_price = 0 %}
+{% assign optional_total_calories = 0 %}
+{% if page.optional_ingredients %}
+    {% for ingredient_ref in page.optional_ingredients %}
+        {% assign ingredient_path = "/ingredients/" | append: ingredient_ref.item %}
+        {% assign ingredient = site.ingredients | where: "id", ingredient_path | first %}
+        {% if ingredient %}
+            {% assign item_price = ingredient.pricePerGram | times: ingredient_ref.amount %}
+            {% assign item_calories = ingredient.nutrition.calories | times: ingredient_ref.amount | divided_by: ingredient.nutrition.serving %}
+            {% assign optional_total_price = optional_total_price | plus: item_price %}
+            {% assign optional_total_calories = optional_total_calories | plus: item_calories %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
 <div class="item-detail recipe-detail">
     <div class="item-header">
         <h1>{{ page.name }}</h1>
@@ -33,8 +48,8 @@ layout: default
             </button>
             <div class="section-content">
                 <div class="quick-info">
-                    <span class="info-item price">${{ price_per_serving }}<span class="per-serving">/serving</span></span>
-                    <span class="info-item">{{ calories_per_serving }} cal</span>
+                    <span class="info-item price">€<span class="base-price">{{ price_per_serving }}</span><span class="per-serving">/serving</span></span>
+                    <span class="info-item"><span class="base-calories">{{ calories_per_serving }}</span> cal</span>
                     <span class="info-item">⏱ {{ page.prepTime }}m</span>
                     <span class="info-item">{% for i in (1..page.difficultyRating) %}🔪{% endfor %}</span>
                 </div>
@@ -69,6 +84,37 @@ layout: default
                     {% endif %}
                     {% endfor %}
                 </ul>
+
+                {% if page.optional_ingredients %}
+                <div class="optional-ingredients">
+                    <h3>Optional Ingredients</h3>
+                    <ul class="ingredients-list">
+                        {% for ingredient_ref in page.optional_ingredients %}
+                        {% assign ingredient_path = "/ingredients/" | append: ingredient_ref.item %}
+                        {% assign ingredient = site.ingredients | where: "id", ingredient_path | first %}
+                        {% if ingredient %}
+                        {% assign item_price = ingredient.pricePerGram | times: ingredient_ref.amount | divided_by: servings | round: 2 %}
+                        {% assign item_calories = ingredient.nutrition.calories | times: ingredient_ref.amount | divided_by: ingredient.nutrition.serving | divided_by: servings | round %}
+                        <li class="ingredient-item optional">
+                            <span class="ingredient-amount">{{ ingredient_ref.amount }}{{ ingredient_ref.unit }}</span>
+                            <a href="{{ ingredient.url | relative_url }}" class="ingredient-name">
+                                {{ ingredient.name }}
+                            </a>
+                            {% if ingredient_ref.prep %}
+                            <span class="ingredient-prep">{{ ingredient_ref.prep }}</span>
+                            {% endif %}
+                            <label class="ingredient-checkbox">
+                                <input type="checkbox" 
+                                       data-price="{{ item_price }}" 
+                                       data-calories="{{ item_calories }}"
+                                       class="optional-ingredient-checkbox">
+                            </label>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
             </div>
         </div>
 
@@ -97,4 +143,29 @@ function toggleSection(button) {
     content.classList.toggle('collapsed');
     icon.textContent = content.classList.contains('collapsed') ? '+' : '−';
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const basePrice = parseFloat(document.querySelector('.base-price').textContent);
+    const baseCalories = parseInt(document.querySelector('.base-calories').textContent);
+    const checkboxes = document.querySelectorAll('.optional-ingredient-checkbox');
+    
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            let additionalPrice = 0;
+            let additionalCalories = 0;
+            
+            checkboxes.forEach(cb => {
+                if (cb.checked) {
+                    additionalPrice += parseFloat(cb.dataset.price);
+                    additionalCalories += parseInt(cb.dataset.calories);
+                }
+            });
+            
+            document.querySelector('.base-price').textContent = 
+                (basePrice + additionalPrice).toFixed(2);
+            document.querySelector('.base-calories').textContent = 
+                Math.round(baseCalories + additionalCalories);
+        });
+    });
+});
 </script> 

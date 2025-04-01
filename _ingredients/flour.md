@@ -2,7 +2,7 @@
 layout: ingredient-detail
 name: All-Purpose Flour
 id: /ingredients/flour
-pricePerGram: 0.002
+pricePerGram: 0.0018  # ~€1.80/kg
 vegan: true
 nutrition:
   serving: 100

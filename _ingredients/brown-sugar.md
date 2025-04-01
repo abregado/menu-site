@@ -1,8 +1,8 @@
 ---
 layout: ingredient-detail
 name: Brown Sugar
-id: brown-sugar
-pricePerGram: 0.003
+id: /ingredients/brown-sugar
+pricePerGram: 0.003  # ~€3/kg
 vegan: true
 nutrition:
   serving: 100

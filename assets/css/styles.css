@@ -660,7 +660,7 @@ body {
 
 .ingredient-item {
     display: grid;
-    grid-template-columns: 100px 1fr auto;
+    grid-template-columns: 100px 1fr auto auto;
     gap: 1rem;
     align-items: center;
     padding: 0.5rem 0;
@@ -711,7 +711,7 @@ body {
 /* Mobile adjustments */
 @media (max-width: 768px) {
     .ingredient-item {
-        grid-template-columns: 80px 1fr;
+        grid-template-columns: 80px 1fr auto auto;
         gap: 0.75rem;
     }
 
@@ -724,6 +724,10 @@ body {
         text-align: left;
         padding-left: 80px;
         font-size: 0.85rem;
+    }
+
+    .ingredient-checkbox {
+        padding-left: 0;
     }
 }
 
@@ -1049,4 +1053,86 @@ body {
 /* Keep monospace for ingredient amounts in retro theme */
 [data-theme="retro"] .ingredient-amount {
   font-family: "Courier New", "Courier", monospace;
+}
+
+/* Optional ingredients styling */
+.optional-ingredients {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px dashed var(--border-color);
+}
+
+.optional-ingredients h3 {
+    font-size: 1.1rem;
+    margin: 0 0 1rem 0;
+    color: var(--secondary-color);
+}
+
+.ingredient-item.optional {
+    opacity: 0.8;
+}
+
+/* Retro theme adjustments */
+[data-theme="retro"] .optional-ingredients h3 {
+    color: var(--primary-color);
+}
+
+[data-theme="retro"] .optional-ingredients {
+    border-top-style: solid;
+}
+
+/* Optional ingredient checkbox styling */
+.ingredient-checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 0.5rem;
+}
+
+.optional-ingredient-checkbox {
+    margin: 0;
+    cursor: pointer;
+    accent-color: var(--accent-color);
+}
+
+[data-theme="retro"] .optional-ingredient-checkbox {
+    accent-color: var(--primary-color);
+}
+
+.ingredient-item.optional {
+    opacity: 1;
+    transition: opacity 0.2s ease;
+}
+
+.ingredient-item.optional:hover {
+    opacity: 0.9;
+}
+
+/* Update optional ingredient item grid */
+.ingredient-item.optional {
+    grid-template-columns: 100px 1fr auto auto;
+    gap: 1rem;
+}
+
+.ingredient-checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 0.5rem;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .ingredient-item.optional {
+        grid-template-columns: 80px 1fr auto auto;
+    }
+    
+    .ingredient-item.optional .ingredient-prep {
+        grid-column: 1 / -1;
+        padding-left: 80px;
+    }
+
+    .ingredient-checkbox {
+        padding-left: 0;
+    }
 } 

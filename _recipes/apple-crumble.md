@@ -23,15 +23,15 @@ ingredients:
   - item: brown-sugar
     amount: 200
     unit: g
+optional_ingredients:
   - item: cinnamon
     amount: 5
     unit: g
+    prep: ground
   - item: nutmeg
     amount: 2
     unit: g
-  - item: salt
-    amount: 1
-    unit: g
+    prep: freshly grated
 instructions:
   - Preheat oven to 190°C (375°F)
   - Prepare the ingredients

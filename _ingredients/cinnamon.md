@@ -1,8 +1,8 @@
 ---
 layout: ingredient-detail
-name: Cinnamon
-id: cinnamon
-pricePerGram: 0.05
+name: Ground Cinnamon
+id: /ingredients/cinnamon
+pricePerGram: 0.032  # ~€32/kg
 vegan: true
 nutrition:
   serving: 100

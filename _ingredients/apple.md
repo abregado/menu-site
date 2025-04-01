@@ -2,7 +2,7 @@
 layout: ingredient-detail
 name: Apple
 id: /ingredients/apple
-pricePerGram: 0.004
+pricePerGram: 0.0037  # ~€3.70/kg
 vegan: true
 nutrition:
   serving: 100

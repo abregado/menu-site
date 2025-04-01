@@ -2,7 +2,7 @@
 layout: ingredient-detail
 name: Unsalted Butter
 id: /ingredients/butter
-pricePerGram: 0.012
+pricePerGram: 0.011  # ~€11/kg
 vegan: false
 nutrition:
   serving: 100
