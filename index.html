@@ -1,6 +1,14 @@
 ---
 layout: default
 ---
+<!-- Debug info -->
+<div style="display:none">
+    <p>Available ingredients:</p>
+    {% for ing in site.ingredients %}
+    - {{ ing.id }}: {{ ing.name }}
+    {% endfor %}
+</div>
+
 <div class="menu-list">
     {% for category in site.data.categories %}
     {% assign category_recipes = site.recipes | where: "category", category.id %}
@@ -9,12 +17,28 @@ layout: default
         <h2>{{ category.name }}</h2>
         <div class="items-grid">
             {% for recipe in category_recipes %}
+            {% assign total_price = 0 %}
+            {% assign total_calories = 0 %}
+            {% assign servings = recipe.serves | default: 4 %}
+            {% for ingredient_ref in recipe.ingredients %}
+                {% assign ingredient_path = "/ingredients/" | append: ingredient_ref.item %}
+                {% assign ingredient = site.ingredients | where: "id", ingredient_path | first %}
+                {% if ingredient %}
+                    {% assign item_price = ingredient.pricePerGram | times: ingredient_ref.amount %}
+                    {% assign item_calories = ingredient.nutrition.calories | times: ingredient_ref.amount | divided_by: ingredient.nutrition.serving %}
+                    {% assign total_price = total_price | plus: item_price %}
+                    {% assign total_calories = total_calories | plus: item_calories %}
+                {% endif %}
+            {% endfor %}
+            {% assign price_per_serving = total_price | divided_by: servings | round: 2 %}
+            {% assign calories_per_serving = total_calories | divided_by: servings | round %}
+            
             <a href="{{ recipe.url | relative_url }}" class="menu-item-card">
                 <h3>{{ recipe.name }}</h3>
                 <div class="item-details">
                     <div class="detail-row">
-                        <p class="price">${{ recipe.pricePerServing }}<span>/serving</span></p>
-                        <p class="calories">{{ recipe.calories }} cal</p>
+                        <p class="price">${{ price_per_serving }}<span>/serving</span></p>
+                        <p class="calories">{{ calories_per_serving }} cal</p>
                     </div>
                     <div class="detail-row">
                         <p class="prep-time">⏱ {{ recipe.prepTime }}m</p>

@@ -1,0 +1,127 @@
+---
+layout: default
+---
+<div class="item-detail ingredient-detail">
+    <div class="item-header">
+        <h1>{{ page.name }}</h1>
+    </div>
+
+    <div class="recipe-content">
+        <div class="recipe-section nutrition-section">
+            <h2>Nutrition Information</h2>
+            <div class="section-content">
+                <div class="nutrition-table">
+                    <table>
+                        <tr class="nutrition-header">
+                            <th colspan="2">Nutrition Declaration</th>
+                            <th>per 100g</th>
+                        </tr>
+                        <tr class="major-nutrient">
+                            <td colspan="2">Energy</td>
+                            <td>
+                                {{ page.nutrition.calories }} kcal<br>
+                                <span class="energy-kj">{{ page.nutrition.calories | times: 4.184 | round }} kJ</span>
+                            </td>
+                        </tr>
+                        <tr class="major-nutrient">
+                            <td colspan="2">Fat</td>
+                            <td>{{ page.nutrition.fat }}g</td>
+                        </tr>
+                        {% if page.nutrition.fatBreakdown %}
+                        <tr class="sub-nutrient">
+                            <td></td>
+                            <td>of which saturates</td>
+                            <td>{{ page.nutrition.fatBreakdown.saturated }}g</td>
+                        </tr>
+                        <tr class="sub-nutrient">
+                            <td></td>
+                            <td>of which mono-unsaturates</td>
+                            <td>{{ page.nutrition.fatBreakdown.monounsaturated }}g</td>
+                        </tr>
+                        <tr class="sub-nutrient">
+                            <td></td>
+                            <td>of which polyunsaturates</td>
+                            <td>{{ page.nutrition.fatBreakdown.polyunsaturated }}g</td>
+                        </tr>
+                        {% endif %}
+                        <tr class="major-nutrient">
+                            <td colspan="2">Carbohydrate</td>
+                            <td>{{ page.nutrition.carbs }}g</td>
+                        </tr>
+                        {% if page.nutrition.carbBreakdown %}
+                        <tr class="sub-nutrient">
+                            <td></td>
+                            <td>of which sugars</td>
+                            <td>{{ page.nutrition.carbBreakdown.sugars }}g</td>
+                        </tr>
+                        <tr class="sub-nutrient">
+                            <td></td>
+                            <td>of which starch</td>
+                            <td>{{ page.nutrition.carbBreakdown.starch }}g</td>
+                        </tr>
+                        <tr class="sub-nutrient">
+                            <td></td>
+                            <td>of which fiber</td>
+                            <td>{{ page.nutrition.carbBreakdown.fiber }}g</td>
+                        </tr>
+                        {% endif %}
+                        <tr class="major-nutrient">
+                            <td colspan="2">Protein</td>
+                            <td>{{ page.nutrition.protein }}g</td>
+                        </tr>
+                        <tr class="major-nutrient">
+                            <td colspan="2">Salt</td>
+                            <td>{{ page.nutrition.sodium | times: 2.5 | round: 2 }}g</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="nutrition-note">
+                    Reference intake of an average adult (8400kJ / 2000kcal)
+                </div>
+            </div>
+        </div>
+
+        <div class="recipe-section details-section">
+            <h2>Details</h2>
+            <div class="section-content">
+                <div class="ingredient-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Price</span>
+                        <span class="detail-value">${{ page.pricePerGram | times: 100 | round: 2 }}/100g</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Diet Type</span>
+                        <span class="detail-value">{% if page.vegan %}🌱 Vegan{% else %}Non-Vegan{% endif %}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% assign recipes_using = site.recipes %}
+        {% assign filtered_recipes = "" | split: "" %}
+        {% for recipe in recipes_using %}
+            {% for ingredient in recipe.ingredients %}
+                {% assign full_ingredient_path = "/ingredients/" | append: ingredient.item %}
+                {% if full_ingredient_path == page.id %}
+                    {% assign filtered_recipes = filtered_recipes | push: recipe %}
+                    {% break %}
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+
+        {% if filtered_recipes.size > 0 %}
+        <div class="recipe-section used-in-section">
+            <h2>Used In Recipes</h2>
+            <div class="section-content">
+                <div class="recipe-pills">
+                    {% for recipe in filtered_recipes %}
+                    <a href="{{ recipe.url | relative_url }}" class="recipe-pill">
+                        {{ recipe.name }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div> 

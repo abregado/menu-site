@@ -7,10 +7,18 @@ collections:
   recipes:
     output: true
     permalink: /recipes/:name
+  ingredients:
+    output: true
+    permalink: /ingredients/:name
 
 defaults:
   - scope:
       path: ""
       type: "recipes"
     values:
-      layout: "item" 
+      layout: "recipe-detail"
+  - scope:
+      path: ""
+      type: "ingredients"
+    values:
+      layout: "ingredient-detail" 

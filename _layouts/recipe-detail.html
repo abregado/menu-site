@@ -1,0 +1,100 @@
+---
+layout: default
+---
+
+{% assign total_price = 0 %}
+{% assign total_calories = 0 %}
+{% assign servings = page.serves | default: 4 %}
+{% for ingredient_ref in page.ingredients %}
+    {% assign ingredient_path = "/ingredients/" | append: ingredient_ref.item %}
+    {% assign ingredient = site.ingredients | where: "id", ingredient_path | first %}
+    <!-- Debug each lookup -->
+    <!-- {{ ingredient_ref.item }}: {% if ingredient %}found{% else %}not found{% endif %} -->
+    {% if ingredient %}
+        {% assign item_price = ingredient.pricePerGram | times: ingredient_ref.amount %}
+        {% assign item_calories = ingredient.nutrition.calories | times: ingredient_ref.amount | divided_by: ingredient.nutrition.serving %}
+        {% assign total_price = total_price | plus: item_price %}
+        {% assign total_calories = total_calories | plus: item_calories %}
+    {% endif %}
+{% endfor %}
+{% assign price_per_serving = total_price | divided_by: servings | round: 2 %}
+{% assign calories_per_serving = total_calories | divided_by: servings | round %}
+
+<div class="item-detail recipe-detail">
+    <div class="item-header">
+        <h1>{{ page.name }}</h1>
+    </div>
+
+    <div class="recipe-content">
+        <div class="recipe-section details-section">
+            <button class="section-header" onclick="toggleSection(this)">
+                <h2>Details</h2>
+                <span class="toggle-icon">−</span>
+            </button>
+            <div class="section-content">
+                <div class="quick-info">
+                    <span class="info-item price">${{ price_per_serving }}<span class="per-serving">/serving</span></span>
+                    <span class="info-item">{{ calories_per_serving }} cal</span>
+                    <span class="info-item">⏱ {{ page.prepTime }}m</span>
+                    <span class="info-item">{% for i in (1..page.difficultyRating) %}🔪{% endfor %}</span>
+                </div>
+                {% if page.description %}
+                <div class="recipe-description">
+                    {{ page.description }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="recipe-section ingredients-section">
+            <button class="section-header" onclick="toggleSection(this)">
+                <h2>Ingredients</h2>
+                <span class="toggle-icon">−</span>
+            </button>
+            <div class="section-content">
+                <ul class="ingredients-list">
+                    {% for ingredient_ref in page.ingredients %}
+                    {% assign ingredient_path = "/ingredients/" | append: ingredient_ref.item %}
+                    {% assign ingredient = site.ingredients | where: "id", ingredient_path | first %}
+                    {% if ingredient %}
+                    <li class="ingredient-item">
+                        <span class="ingredient-amount">{{ ingredient_ref.amount }}{{ ingredient_ref.unit }}</span>
+                        <a href="{{ ingredient.url | relative_url }}" class="ingredient-name">
+                            {{ ingredient.name }}
+                        </a>
+                        {% if ingredient_ref.prep %}
+                        <span class="ingredient-prep">{{ ingredient_ref.prep }}</span>
+                        {% endif %}
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="recipe-section instructions-section">
+            <button class="section-header" onclick="toggleSection(this)">
+                <h2>Instructions</h2>
+                <span class="toggle-icon">−</span>
+            </button>
+            <div class="section-content">
+                <ol>
+                    {% for instruction in page.instructions %}
+                    <li>{{ instruction }}</li>
+                    {% endfor %}
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function toggleSection(button) {
+    const section = button.parentElement;
+    const content = section.querySelector('.section-content');
+    const icon = button.querySelector('.toggle-icon');
+    
+    content.classList.toggle('collapsed');
+    icon.textContent = content.classList.contains('collapsed') ? '+' : '−';
+}
+</script> 
