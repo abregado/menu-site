@@ -20,6 +20,33 @@ layout: default
 {% assign price_per_serving = total_price | divided_by: servings | round: 2 %}
 {% assign calories_per_serving = total_calories | divided_by: servings | round %}
 
+{% assign total_fat = 0 %}
+{% assign total_saturated_fat = 0 %}
+{% assign total_carbs = 0 %}
+{% assign total_sugars = 0 %}
+{% assign total_fiber = 0 %}
+{% assign total_protein = 0 %}
+{% assign total_sodium = 0 %}
+
+{% for ingredient_ref in page.ingredients %}
+    {% assign ingredient_path = "/ingredients/" | append: ingredient_ref.item %}
+    {% assign ingredient = site.ingredients | where: "id", ingredient_path | first %}
+    {% if ingredient %}
+        {% assign serving_ratio = ingredient_ref.amount | divided_by: ingredient.nutrition.serving %}
+        {% assign total_fat = total_fat | plus: ingredient.nutrition.fat | times: serving_ratio %}
+        {% if ingredient.nutrition.fatBreakdown %}
+            {% assign total_saturated_fat = total_saturated_fat | plus: ingredient.nutrition.fatBreakdown.saturated | times: serving_ratio %}
+        {% endif %}
+        {% assign total_carbs = total_carbs | plus: ingredient.nutrition.carbs | times: serving_ratio %}
+        {% if ingredient.nutrition.carbBreakdown %}
+            {% assign total_sugars = total_sugars | plus: ingredient.nutrition.carbBreakdown.sugars | times: serving_ratio %}
+            {% assign total_fiber = total_fiber | plus: ingredient.nutrition.carbBreakdown.fiber | times: serving_ratio %}
+        {% endif %}
+        {% assign total_protein = total_protein | plus: ingredient.nutrition.protein | times: serving_ratio %}
+        {% assign total_sodium = total_sodium | plus: ingredient.nutrition.sodium | times: serving_ratio %}
+    {% endif %}
+{% endfor %}
+
 {% assign optional_total_price = 0 %}
 {% assign optional_total_calories = 0 %}
 {% if page.optional_ingredients %}
@@ -107,6 +134,13 @@ layout: default
                                 <input type="checkbox" 
                                        data-price="{{ item_price }}" 
                                        data-calories="{{ item_calories }}"
+                                       data-fat="{{ ingredient.nutrition.fat | times: ingredient_ref.amount | divided_by: ingredient.nutrition.serving | divided_by: servings | round: 1 }}"
+                                       data-saturated="{{ ingredient.nutrition.fatBreakdown.saturated | times: ingredient_ref.amount | divided_by: ingredient.nutrition.serving | divided_by: servings | round: 1 }}"
+                                       data-carbs="{{ ingredient.nutrition.carbs | times: ingredient_ref.amount | divided_by: ingredient.nutrition.serving | divided_by: servings | round: 1 }}"
+                                       data-sugars="{{ ingredient.nutrition.carbBreakdown.sugars | times: ingredient_ref.amount | divided_by: ingredient.nutrition.serving | divided_by: servings | round: 1 }}"
+                                       data-fiber="{{ ingredient.nutrition.carbBreakdown.fiber | times: ingredient_ref.amount | divided_by: ingredient.nutrition.serving | divided_by: servings | round: 1 }}"
+                                       data-protein="{{ ingredient.nutrition.protein | times: ingredient_ref.amount | divided_by: ingredient.nutrition.serving | divided_by: servings | round: 1 }}"
+                                       data-sodium="{{ ingredient.nutrition.sodium | times: ingredient_ref.amount | divided_by: ingredient.nutrition.serving | divided_by: servings | times: 2.5 | round: 2 }}"
                                        class="optional-ingredient-checkbox">
                             </label>
                         </li>
@@ -131,6 +165,64 @@ layout: default
                 </ol>
             </div>
         </div>
+
+        <div class="recipe-section nutrition-section">
+            <button class="section-header" onclick="toggleSection(this)">
+                <h2>Nutrition Facts</h2>
+                <span class="toggle-icon">+</span>
+            </button>
+            <div class="section-content collapsed">
+                <div class="nutrition-table">
+                    <table>
+                        <tr class="nutrition-header">
+                            <th colspan="2">Nutrition Declaration</th>
+                            <th>per serving</th>
+                        </tr>
+                        <tr class="major-nutrient">
+                            <td colspan="2">Energy</td>
+                            <td>
+                                <span id="nutrition-calories">{{ calories_per_serving }}</span> kcal<br>
+                                <span class="energy-kj">{{ calories_per_serving | times: 4.184 | round }} kJ</span>
+                            </td>
+                        </tr>
+                        <tr class="major-nutrient">
+                            <td colspan="2">Fat</td>
+                            <td><span class="base-fat">{{ total_fat | divided_by: servings | round: 1 }}</span>g</td>
+                        </tr>
+                        <tr class="sub-nutrient">
+                            <td></td>
+                            <td>of which saturates</td>
+                            <td><span class="base-saturated">{{ total_saturated_fat | divided_by: servings | round: 1 }}</span>g</td>
+                        </tr>
+                        <tr class="major-nutrient">
+                            <td colspan="2">Carbohydrate</td>
+                            <td><span class="base-carbs">{{ total_carbs | divided_by: servings | round: 1 }}</span>g</td>
+                        </tr>
+                        <tr class="sub-nutrient">
+                            <td></td>
+                            <td>of which sugars</td>
+                            <td><span class="base-sugars">{{ total_sugars | divided_by: servings | round: 1 }}</span>g</td>
+                        </tr>
+                        <tr class="sub-nutrient">
+                            <td></td>
+                            <td>of which fiber</td>
+                            <td><span class="base-fiber">{{ total_fiber | divided_by: servings | round: 1 }}</span>g</td>
+                        </tr>
+                        <tr class="major-nutrient">
+                            <td colspan="2">Protein</td>
+                            <td><span class="base-protein">{{ total_protein | divided_by: servings | round: 1 }}</span>g</td>
+                        </tr>
+                        <tr class="major-nutrient">
+                            <td colspan="2">Salt</td>
+                            <td><span class="base-sodium">{{ total_sodium | divided_by: servings | times: 2.5 | round: 2 }}</span>g</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="nutrition-note">
+                    Reference intake of an average adult (8400kJ / 2000kcal)
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -147,24 +239,66 @@ function toggleSection(button) {
 document.addEventListener('DOMContentLoaded', function() {
     const basePrice = parseFloat(document.querySelector('.base-price').textContent);
     const baseCalories = parseInt(document.querySelector('.base-calories').textContent);
+    const baseFat = parseFloat(document.querySelector('.base-fat').textContent);
+    const baseSaturated = parseFloat(document.querySelector('.base-saturated').textContent);
+    const baseCarbs = parseFloat(document.querySelector('.base-carbs').textContent);
+    const baseSugars = parseFloat(document.querySelector('.base-sugars').textContent);
+    const baseFiber = parseFloat(document.querySelector('.base-fiber').textContent);
+    const baseProtein = parseFloat(document.querySelector('.base-protein').textContent);
+    const baseSodium = parseFloat(document.querySelector('.base-sodium').textContent);
     const checkboxes = document.querySelectorAll('.optional-ingredient-checkbox');
     
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', function() {
             let additionalPrice = 0;
             let additionalCalories = 0;
+            let additionalFat = 0;
+            let additionalSaturated = 0;
+            let additionalCarbs = 0;
+            let additionalSugars = 0;
+            let additionalFiber = 0;
+            let additionalProtein = 0;
+            let additionalSodium = 0;
             
             checkboxes.forEach(cb => {
                 if (cb.checked) {
-                    additionalPrice += parseFloat(cb.dataset.price);
-                    additionalCalories += parseInt(cb.dataset.calories);
+                    additionalPrice += parseFloat(cb.dataset.price || 0);
+                    additionalCalories += parseInt(cb.dataset.calories || 0);
+                    additionalFat += parseFloat(cb.dataset.fat || 0);
+                    additionalSaturated += parseFloat(cb.dataset.saturated || 0);
+                    additionalCarbs += parseFloat(cb.dataset.carbs || 0);
+                    additionalSugars += parseFloat(cb.dataset.sugars || 0);
+                    additionalFiber += parseFloat(cb.dataset.fiber || 0);
+                    additionalProtein += parseFloat(cb.dataset.protein || 0);
+                    additionalSodium += parseFloat(cb.dataset.sodium || 0);
                 }
             });
             
+            // Update all nutrition values
             document.querySelector('.base-price').textContent = 
                 (basePrice + additionalPrice).toFixed(2);
-            document.querySelector('.base-calories').textContent = 
-                Math.round(baseCalories + additionalCalories);
+
+            // Update calories in both locations
+            const totalKcal = Math.round(baseCalories + additionalCalories);
+            document.querySelector('.base-calories').textContent = totalKcal; // Quick info section
+            document.querySelector('#nutrition-calories').textContent = totalKcal; // Nutrition table
+            document.querySelector('.energy-kj').textContent = 
+                Math.round(totalKcal * 4.184) + ' kJ';
+
+            document.querySelector('.base-fat').textContent = 
+                (baseFat + additionalFat).toFixed(1);
+            document.querySelector('.base-saturated').textContent = 
+                (baseSaturated + additionalSaturated).toFixed(1);
+            document.querySelector('.base-carbs').textContent = 
+                (baseCarbs + additionalCarbs).toFixed(1);
+            document.querySelector('.base-sugars').textContent = 
+                (baseSugars + additionalSugars).toFixed(1);
+            document.querySelector('.base-fiber').textContent = 
+                (baseFiber + additionalFiber).toFixed(1);
+            document.querySelector('.base-protein').textContent = 
+                (baseProtein + additionalProtein).toFixed(1);
+            document.querySelector('.base-sodium').textContent = 
+                (baseSodium + additionalSodium).toFixed(2);
         });
     });
 });

@@ -660,7 +660,7 @@ body {
 
 .ingredient-item {
     display: grid;
-    grid-template-columns: 100px 1fr auto auto;
+    grid-template-columns: 100px minmax(100px, 1fr) auto auto;
     gap: 1rem;
     align-items: center;
     padding: 0.5rem 0;
@@ -672,62 +672,39 @@ body {
 }
 
 .ingredient-amount {
-    color: var(--secondary-color);
-    font-family: "DejaVu Sans Mono", "Liberation Mono", "Noto Sans Mono", "Courier", monospace;
-    font-size: 0.95rem;
+    white-space: nowrap;
 }
 
 .ingredient-name {
-    color: var(--primary-color);
-    text-decoration: none;
-    transition: color 0.2s ease;
-}
-
-.ingredient-name:hover {
-    color: var(--accent-color);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .ingredient-prep {
-    color: var(--secondary-color);
-    font-style: italic;
-    font-size: 0.9rem;
+    text-align: right;
+    white-space: nowrap;
+    grid-column: auto;  /* Reset the previous grid-column setting */
+    margin-top: 0;      /* Reset the previous margin */
 }
 
-/* Retro theme adjustments */
-[data-theme="retro"] .ingredient-amount {
-    color: var(--primary-color);
-    opacity: 0.9;
-}
-
-[data-theme="retro"] .ingredient-item {
-    border-bottom-color: var(--border-color);
-}
-
-[data-theme="retro"] .ingredient-prep {
-    color: var(--primary-color);
-    opacity: 0.8;
+.ingredient-checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 0.5rem;
+    margin-left: auto;  /* Push checkbox to the right */
 }
 
 /* Mobile adjustments */
 @media (max-width: 768px) {
     .ingredient-item {
-        grid-template-columns: 80px 1fr auto auto;
+        grid-template-columns: 80px minmax(80px, 1fr) auto auto;
         gap: 0.75rem;
     }
 
-    .ingredient-amount {
-        font-size: 0.9rem;
-    }
-
     .ingredient-prep {
-        grid-column: 1 / -1;
-        text-align: left;
-        padding-left: 80px;
         font-size: 0.85rem;
-    }
-
-    .ingredient-checkbox {
-        padding-left: 0;
     }
 }
 
@@ -1135,4 +1112,79 @@ body {
     .ingredient-checkbox {
         padding-left: 0;
     }
+}
+
+/* Retro checkbox styling */
+[data-theme="retro"] .ingredient-checkbox input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--primary-color);
+    background: var(--background-color);
+    position: relative;
+    cursor: pointer;
+    font-family: "Courier New", "Courier", monospace;
+}
+
+[data-theme="retro"] .ingredient-checkbox input[type="checkbox"]:checked::before {
+    content: "X";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--primary-color);
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+[data-theme="retro"] .ingredient-checkbox input[type="checkbox"]:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+[data-theme="retro"] .ingredient-checkbox input[type="checkbox"]:hover {
+    background-color: rgba(0, 255, 0, 0.1);
+}
+
+/* Base link styling */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Specific link resets for ingredient names */
+.ingredient-name {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+/* Recipe pill links already have their own styling */
+.recipe-pill {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+/* Back button link reset */
+.back-button {
+    color: var(--secondary-color);
+    text-decoration: none;
+}
+
+/* Recipe link in used-in section */
+.recipe-link {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+/* Site title link */
+.site-title a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+/* Remove any existing hover underlines */
+a:hover {
+    text-decoration: none;
 } 

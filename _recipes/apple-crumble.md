@@ -31,7 +31,10 @@ optional_ingredients:
   - item: nutmeg
     amount: 2
     unit: g
-    prep: freshly grated
+    prep: ground or grated
+  - item: cheese
+    amount: 50
+    unit: g
 instructions:
   - Preheat oven to 190°C (375°F)
   - Prepare the ingredients
