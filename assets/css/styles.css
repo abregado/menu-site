@@ -1187,4 +1187,14 @@ a {
 /* Remove any existing hover underlines */
 a:hover {
     text-decoration: none;
+}
+
+.ingredient-name.missing {
+    color: var(--secondary-color);
+    font-style: italic;
+}
+
+[data-theme="retro"] .ingredient-name.missing {
+    color: var(--primary-color);
+    opacity: 0.8;
 } 

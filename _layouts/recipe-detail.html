@@ -96,19 +96,23 @@ layout: default
             <div class="section-content">
                 <ul class="ingredients-list">
                     {% for ingredient_ref in page.ingredients %}
-                    {% assign ingredient_path = "/ingredients/" | append: ingredient_ref.item %}
-                    {% assign ingredient = site.ingredients | where: "id", ingredient_path | first %}
-                    {% if ingredient %}
-                    <li class="ingredient-item">
-                        <span class="ingredient-amount">{{ ingredient_ref.amount }}{{ ingredient_ref.unit }}</span>
-                        <a href="{{ ingredient.url | relative_url }}" class="ingredient-name">
-                            {{ ingredient.name }}
-                        </a>
-                        {% if ingredient_ref.prep %}
-                        <span class="ingredient-prep">{{ ingredient_ref.prep }}</span>
-                        {% endif %}
-                    </li>
-                    {% endif %}
+                        {% assign ingredient_path = "/ingredients/" | append: ingredient_ref.item %}
+                        {% assign ingredient = site.ingredients | where: "id", ingredient_path | first %}
+                        <li class="ingredient-item">
+                            <span class="ingredient-amount">{{ ingredient_ref.amount }}{{ ingredient_ref.unit }}</span>
+                            {% if ingredient %}
+                                <a href="{{ ingredient.url | relative_url }}" class="ingredient-name">
+                                    {{ ingredient.name }}
+                                </a>
+                            {% else %}
+                                <span class="ingredient-name missing">
+                                    {{ ingredient_ref.item }}
+                                </span>
+                            {% endif %}
+                            {% if ingredient_ref.prep %}
+                                <span class="ingredient-prep">{{ ingredient_ref.prep }}</span>
+                            {% endif %}
+                        </li>
                     {% endfor %}
                 </ul>
 

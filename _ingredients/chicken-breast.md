@@ -4,6 +4,9 @@ name: Chicken Breast
 id: /ingredients/chicken-breast
 pricePerGram: 0.014  # ~€14/kg
 vegan: false
+units:
+  piece: 200    # 1 medium breast ≈ 200g
+  cup: 140      # 1 cup diced ≈ 140g
 nutrition:
   serving: 100
   calories: 165

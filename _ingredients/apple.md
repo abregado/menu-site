@@ -4,6 +4,10 @@ name: Apple
 id: /ingredients/apple
 pricePerGram: 0.0037  # ~€3.70/kg
 vegan: true
+units:
+  medium: 180    # 1 medium apple ≈ 180g
+  large: 220     # 1 large apple ≈ 220g
+  cup: 125      # 1 cup chopped ≈ 125g
 nutrition:
   serving: 100
   calories: 52

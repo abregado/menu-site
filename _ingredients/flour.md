@@ -4,6 +4,9 @@ name: All-Purpose Flour
 id: /ingredients/flour
 pricePerGram: 0.0018  # ~€1.80/kg
 vegan: true
+units:
+  cup: 125      # 1 cup ≈ 125g
+  tbsp: 8       # 1 tablespoon ≈ 8g
 nutrition:
   serving: 100
   calories: 364
